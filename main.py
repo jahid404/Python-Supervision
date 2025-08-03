@@ -1,6 +1,6 @@
 import cv2
 import supervision as sv
-from inference import get_model
+from ultralytics import YOLO
 
 model = get_model(model_id="yolov8n-640")
 image = cv2.imread("resources/images/traffic-1.webp")
