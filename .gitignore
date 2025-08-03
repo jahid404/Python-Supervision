@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VS Code & JetBrains IDE settings
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python metadata
+*.egg-info/
+.eggs/
+*.log
+
+# Model caches
+*.pt
+*.onnx
+*.tflite
+runs/
+*.ckpt
+*.weights
+ultralytics/
+
+# Video output/cache
+resources/videos/results/
+
+# RoboFlow local API key (if ever stored)
+.roboflow_config.json
