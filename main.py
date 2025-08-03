@@ -1,33 +1,26 @@
-import numpy as np
+import cv2
 import supervision as sv
-from inference.models.utils import get_roboflow_model
+from inference import get_model
 
-model = get_roboflow_model(model_id="yolov8n-640", api_key="5mDZf8wehgAFIsivtQkh")
-tracker = sv.ByteTrack()
+model = get_model(model_id="yolov8n-640")
+image = cv2.imread("resources/images/traffic-1.webp")
+results = model.infer(image)[0]
+detections = sv.Detections.from_inference(results)
+
 box_annotator = sv.BoxAnnotator()
 label_annotator = sv.LabelAnnotator()
-trace_annotator = sv.TraceAnnotator()
 
-def callback(frame: np.ndarray, _: int) -> np.ndarray:
-    results = model.infer(frame)[0]
-    detections = sv.Detections.from_inference(results)
-    detections = tracker.update_with_detections(detections)
+labels = [
+    f"{class_name} {confidence:.2f}"
+    for class_name, confidence
+    in zip(detections['class_name'], detections.confidence)
+]
 
-    labels = [
-        f"#{tracker_id} {class_name}"
-        for class_name, tracker_id
-        in zip(detections.data["class_name"], detections.tracker_id)
-    ]
+annotated_image = box_annotator.annotate(
+    scene=image, detections=detections)
+annotated_image = label_annotator.annotate(
+    scene=annotated_image, detections=detections, labels=labels)
 
-    annotated_frame = box_annotator.annotate(
-        frame.copy(), detections=detections)
-    annotated_frame = label_annotator.annotate(
-        annotated_frame, detections=detections, labels=labels)
-    return trace_annotator.annotate(
-        annotated_frame, detections=detections)
-
-sv.process_video(
-    source_path="resources/videos/crowd-1.mp4",
-    target_path="resources/videos/results/crowd-1-trace-detect.mp4",
-    callback=callback
-)
+cv2.imshow("Traffic Detection", annotated_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
