@@ -57,7 +57,7 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
 
 # Process and save the video
 sv.process_video(
-    source_path="../../videos/crowd-1.mp4",
-    target_path="../../videos/results/crowd-1-tracker-total-detect.mp4",
+    source_path="resources/videos/crowd-1.mp4",
+    target_path="resources/videos/results/crowd-1-tracker-total-detect.mp4",
     callback=callback
 )

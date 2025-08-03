@@ -6,7 +6,6 @@ model = get_roboflow_model(model_id="yolov8n-640", api_key="5mDZf8wehgAFIsivtQkh
 tracker = sv.ByteTrack()
 box_annotator = sv.BoxAnnotator()
 label_annotator = sv.LabelAnnotator()
-trace_annotator = sv.TraceAnnotator()
 
 def callback(frame: np.ndarray, _: int) -> np.ndarray:
     results = model.infer(frame)[0]
@@ -21,13 +20,11 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
 
     annotated_frame = box_annotator.annotate(
         frame.copy(), detections=detections)
-    annotated_frame = label_annotator.annotate(
+    return label_annotator.annotate(
         annotated_frame, detections=detections, labels=labels)
-    return trace_annotator.annotate(
-        annotated_frame, detections=detections)
 
 sv.process_video(
-    source_path="../../videos/crowd-1.mp4",
-    target_path="../../videos/results/crowd-1-trace-detect.mp4",
+    source_path="resources/videos/traffic-2.mp4",
+    target_path="resources/videos/results/traffic-2-tracker-detect.mp4",
     callback=callback
 )

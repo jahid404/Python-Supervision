@@ -11,7 +11,7 @@ def callback(frame: np.ndarray, _: int) -> np.ndarray:
     return box_annotator.annotate(frame.copy(), detections=detections)
 
 sv.process_video(
-    source_path="../../videos/crowd-1.mp4",
-    target_path="../../videos/results/crowd-1-box-detect.mp4",
+    source_path="resources/videos/crowd-1.mp4",
+    target_path="resources/videos/results/crowd-1-box-detect.mp4",
     callback=callback
 )
