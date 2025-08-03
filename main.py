@@ -2,10 +2,10 @@ import cv2
 import supervision as sv
 from ultralytics import YOLO
 
-model = get_model(model_id="yolov8n-640")
+model = YOLO("yolov8n.pt")
 image = cv2.imread("resources/images/traffic-1.webp")
-results = model.infer(image)[0]
-detections = sv.Detections.from_inference(results)
+results = model(image)[0]
+detections = sv.Detections.from_ultralytics(results)
 
 box_annotator = sv.BoxAnnotator()
 label_annotator = sv.LabelAnnotator()
