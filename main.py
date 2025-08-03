@@ -5,13 +5,6 @@ from ultralytics import YOLO
 # Load model and process image
 model = YOLO("yolov8n.pt")
 image = cv2.imread("resources/images/traffic-1.webp")
-
-# Verify image loading
-if image is None:
-    print("Error: Could not load image")
-    exit()
-
-# Process image
 results = model(image)[0]
 detections = sv.Detections.from_ultralytics(results)
 
